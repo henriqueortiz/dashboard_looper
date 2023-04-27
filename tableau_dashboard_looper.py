@@ -78,7 +78,7 @@ class TableauDashboardLooper():
                 self.driver.switch_to.window(self.driver.window_handles[counter])
                 self.open_tabs[self.driver.window_handles[counter]] = dashboard
                 counter += 1
-        
+        time.sleep(10)
         self.set_open_tabs()
 
     def set_open_tabs(self):
