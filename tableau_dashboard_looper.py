@@ -36,7 +36,7 @@ class TableauDashboardLooper():
             }
     '''
 
-    def __init__(self, username=str, password=str, tableau_login_url=str, dashboards=dict):
+    def __init__(self, username=None, password=None, tableau_login_url=None, dashboards=dict):
         self.username = username
         self.password = password
         self.tableau_login_url = tableau_login_url
@@ -56,13 +56,16 @@ class TableauDashboardLooper():
 
     def login_tableau(self, sleep=10):
         # Login on the Tableau instance.
-        self.driver.get(self.tableau_login_url)
-        time.sleep(sleep)
-        self.driver.find_element(By.NAME,'email').send_keys(self.username)
-        self.driver.find_element(By.NAME,'email').send_keys(Keys.ENTER)
-        self.driver.find_element(By.NAME,'password').send_keys(self.password)
-        self.driver.find_element(By.NAME,'password').send_keys(Keys.ENTER)
-        time.sleep(sleep)
+        if self.username and self.password and self.tableau_login_url:
+            self.driver.get(self.tableau_login_url)
+            time.sleep(sleep)
+            self.driver.find_element(By.NAME,'email').send_keys(self.username)
+            self.driver.find_element(By.NAME,'email').send_keys(Keys.ENTER)
+            self.driver.find_element(By.NAME,'password').send_keys(self.password)
+            self.driver.find_element(By.NAME,'password').send_keys(Keys.ENTER)
+            time.sleep(sleep)
+        else:
+            print('You need to add username, password and tableau_login_url to the constructor for that!')
 
     def open_dashboards(self):
         # Opens Chrome tabs with all dashboards contained in the dashboards dict and sets open_tabs attribute.
@@ -97,20 +100,20 @@ class TableauDashboardLooper():
         except:
             print("The TV is not ready yet or is not available.")
 
-    def loop_through_tabs(self):
+    def loop_through_tabs(self, refresh=True):
         # Loops through Chrome tabs applying refresh and wait rules.
         for handle in itertools.cycle(self.open_tabs):
             print(handle)
             self.driver.switch_to.window(handle)
             tab = self.open_tabs[handle]
-
-            if not tab.get('updated_at'):
-                self.driver.find_element(By.XPATH, '//*[@id="refresh"]').click()
-                tab['updated_at'] = datetime.now()
-            else:
-                if (datetime.now() - tab.get('updated_at')).total_seconds() >= tab.get('update_every'):
+            if refresh:
+                if not tab.get('updated_at'):
                     self.driver.find_element(By.XPATH, '//*[@id="refresh"]').click()
                     tab['updated_at'] = datetime.now()
+                else:
+                    if (datetime.now() - tab.get('updated_at')).total_seconds() >= tab.get('update_every'):
+                        self.driver.find_element(By.XPATH, '//*[@id="refresh"]').click()
+                        tab['updated_at'] = datetime.now()
             
             print(handle)
             time.sleep(tab.get('how_long_to_stay'))
