@@ -27,6 +27,7 @@ def main():
     )
 
     tableau.start_browser()
+    tableau.login_tableau()
     tableau.open_dashboards()
     tableau.loop_through_tabs(refresh=False)
 
