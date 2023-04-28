@@ -112,7 +112,7 @@ class TableauDashboardLooper():
                     self.driver.find_element(By.XPATH, '//*[@id="refresh"]').click()
                     tab['updated_at'] = datetime.now()
                 else:
-                    if (datetime.now() - tab.get('updated_at')).total_seconds() >= tab.get('update_every'):
+                    if tab.get('update_every') and tab.get('update_every') != 0  and (datetime.now() - tab.get('updated_at')).total_seconds() >= tab.get('update_every'):
                         self.driver.find_element(By.XPATH, '//*[@id="refresh"]').click()
                         tab['updated_at'] = datetime.now()
             
