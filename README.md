@@ -6,6 +6,7 @@ Power Bi will be available in the future.
 
 Try to run your dashboards using the examples in this repository.
 
+Tableau Tip! ->
 If you want to refresh your dashboard you must informe the IFRAME url of the dashboard, not the actual url of your browser.
 Use Developer Tool of Chrome for find that IFRAME url as the image below.
 
