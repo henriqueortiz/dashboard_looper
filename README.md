@@ -1,5 +1,8 @@
-# tableau_dashboard_looper.py
+# Dashboard Looper
 A module that iteratively displays dashbords using Chrome in kiosk mode.
+
+You can iterate through Tableau and Looker dashboards.
+Power Bi will be available in the future.
 
 Try to run your dashboards using the examples in this repository.
 
