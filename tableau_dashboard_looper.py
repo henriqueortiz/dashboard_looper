@@ -1,5 +1,3 @@
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import itertools
@@ -36,23 +34,24 @@ class TableauDashboardLooper():
             }
     '''
 
-    def __init__(self, username=None, password=None, tableau_login_url=None, dashboards=dict):
+    def __init__(self, driver, username=None, password=None, tableau_login_url=None, dashboards=dict):
         self.username = username
         self.password = password
         self.tableau_login_url = tableau_login_url
         self.dashboards = dashboards.get('dashboards')
         self.open_tabs = {}
+        self.driver = driver
     
-    def start_browser(self, sleep=10, kiosk=True):
-        # Open Chrome webdrive and navigates to the login of your Tableau instance.
-        self.chrome_options = Options()
-        if kiosk:
-            self.chrome_options.add_argument("--kiosk")
-        self.chrome_options.add_argument('start-maximized')
-        self.chrome_options.add_argument('disable-infobars')
-        self.chrome_options.add_experimental_option('excludeSwitches', ['enable-automation'])
-        self.driver = webdriver.Chrome(options=self.chrome_options)
-        time.sleep(sleep)
+    # def start_browser(self, sleep=10, kiosk=True):
+    #     # Open Chrome webdrive and navigates to the login of your Tableau instance.
+    #     self.chrome_options = Options()
+    #     if kiosk:
+    #         self.chrome_options.add_argument("--kiosk")
+    #     self.chrome_options.add_argument('start-maximized')
+    #     self.chrome_options.add_argument('disable-infobars')
+    #     self.chrome_options.add_experimental_option('excludeSwitches', ['enable-automation'])
+    #     self.driver = webdriver.Chrome(options=self.chrome_options)
+    #     time.sleep(sleep)
 
     def login_tableau(self, sleep=10):
         # Login on the Tableau instance.
