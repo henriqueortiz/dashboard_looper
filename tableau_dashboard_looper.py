@@ -3,8 +3,6 @@ from selenium.webdriver.common.keys import Keys
 import itertools
 import time
 from datetime import datetime
-import json
-
 
 class TableauDashboardLooper():
     '''
@@ -94,8 +92,11 @@ class TableauDashboardLooper():
     def start_mirroring(self, tv_name):
         # Start mirroring your Chorme tab to the device informed. *The device must have chromecast or similar technology
         try:
-            self.driver.get_sinks()
-            self.driver.start_desktop_mirroring(sink_name=tv_name)
+            while True:
+                if self.driver.get_sinks():
+                    print(self.driver.get_sinks())
+                    self.driver.start_desktop_mirroring(sink_name=tv_name)
+                    break
         except:
             print("The TV is not ready yet or is not available.")
 
@@ -110,7 +111,7 @@ class TableauDashboardLooper():
                     self.driver.find_element(By.XPATH, '//*[@id="refresh"]').click()
                     tab['updated_at'] = datetime.now()
                 else:
-                    if (datetime.now() - tab.get('updated_at')).total_seconds() >= tab.get('update_every'):
+                    if tab.get('update_every') and tab.get('update_every') != 0  and (datetime.now() - tab.get('updated_at')).total_seconds() >= tab.get('update_every'):
                         self.driver.find_element(By.XPATH, '//*[@id="refresh"]').click()
                         tab['updated_at'] = datetime.now()
             
